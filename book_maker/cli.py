@@ -122,6 +122,14 @@ def main():
         help="You can get Groq Key from  https://console.groq.com/keys",
     )
 
+    # for xAI
+    parser.add_argument(
+        "--xai_key",
+        dest="xai_key",
+        type=str,
+        help="You can get xAI Key from  https://console.x.ai/",
+    )
+
     parser.add_argument(
         "--test",
         dest="test",
@@ -325,8 +333,11 @@ So you are close to reaching the limit. You have to choose your own value, there
 
     options = parser.parse_args()
 
+    if not options.book_name:
+        print(f"Error: please provide the path of your book using --book_name <path>")
+        exit(1)
     if not os.path.isfile(options.book_name):
-        print(f"Error: {options.book_name} does not exist.")
+        print(f"Error: the book {options.book_name!r} does not exist.")
         exit(1)
 
     PROXY = options.proxy
@@ -376,6 +387,8 @@ So you are close to reaching the limit. You have to choose your own value, there
         API_KEY = options.gemini_key or env.get("BBM_GOOGLE_GEMINI_KEY")
     elif options.model == "groq":
         API_KEY = options.groq_key or env.get("BBM_GROQ_API_KEY")
+    elif options.model == "xai":
+        API_KEY = options.xai_key or env.get("BBM_XAI_API_KEY")
     else:
         API_KEY = ""
 
